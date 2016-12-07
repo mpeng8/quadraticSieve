@@ -1,0 +1,5 @@
+make
+./factor
+
+mpicxx -std=gnu++0x qsParallel.cpp -o qsParallel -lgmpxx -lgmp -lmpfr
+mpiexec -np 4 ./qsParallel
