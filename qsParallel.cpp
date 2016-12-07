@@ -18,21 +18,16 @@
 
 // Minimal smoothness bound.
 const static uint32_t MINIMAL_BOUND = 300;
-
-// Sieving interval length.
-const static uint32_t INTERVAL_LENGTH = 100;
+const static uint32_t MINIMAL_M = 131072;
 
 // Input size threshold below which we resort to trial division.
 const static uint32_t TRIAL_THRESHOLD = 1000000000;
-
-// Maximum input size we can handle (bits).
-const static uint32_t MAX_DIGITS = 100;
 
 // GMP random number generator.
 extern gmp_randclass rng;
 
 int main(int argc, char* argv[]) {
-    mpz_class N  = 63787;
+    mpz_class N = 612209628037453;
     const float logN = mpz_sizeinbase(N.get_mpz_t(), 2) * std::log(2);
     const float loglogN = std::log(logN);
     const mpz_class sqrtN = sqrt(N);
@@ -58,7 +53,11 @@ int main(int argc, char* argv[]) {
     }
     //Find the optimal interval to sieve 
     uint32_t intervalStart = 0;
-    uint32_t intervalEnd = 131072;
+    uint32_t intervalEnd = B*B;
+    if (B*B < MINIMAL_M) {
+	intervalEnd += MINIMAL_M;
+    }
+    
 
     uint32_t intervalLength;
 
